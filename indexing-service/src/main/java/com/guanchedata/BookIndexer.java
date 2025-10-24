@@ -2,7 +2,7 @@ package com.guanchedata;
 
 public class BookIndexer {
 
-    public void execute(String bookId){
+    public void execute(int bookId){
 
     }
 }
