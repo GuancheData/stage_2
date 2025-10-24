@@ -12,8 +12,8 @@ public class GutenbergBookContentSeparator {
             throw new IllegalArgumentException();
         }
 
-        String header = content.substring(0, startIndex);
-        String body = content.substring(startIndex + bookStart.length(), endIndex);
+        String header = content.substring(0, startIndex).strip();
+        String body = content.substring(startIndex + bookStart.length(), endIndex).strip();
         return new String[]{header, body};
     }
 }
