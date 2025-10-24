@@ -1,11 +1,19 @@
 package com.guanchedata;
 
+import com.guanchedata.infrastructure.adapters.GutenbergConnection;
+import com.guanchedata.infrastructure.adapters.GutenbergFetch;
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.printf("Hello and welcome!");
+        GutenbergConnection connection = new GutenbergConnection();
+        GutenbergFetch fetch = new GutenbergFetch();
 
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("i = " + i);
+        try {
+            String response = fetch.fetchBook(connection.createConnection(1));
+            System.out.println(response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
