@@ -10,6 +10,5 @@ public class GutenbergConnection {
         return Jsoup.connect(String.format(endPoint, bookId, bookId))
                 .ignoreContentType(true)
                 .method(Connection.Method.GET);
-
     }
 }
