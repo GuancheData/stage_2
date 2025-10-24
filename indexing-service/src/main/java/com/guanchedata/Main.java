@@ -11,7 +11,8 @@ public class Main {
         Javalin app = Javalin.create(config -> {
             config.http.defaultContentType = "application/json";}).start(7000);
 
-        app.get("/status", ctx -> {
+        // third endpoint
+        app.get("/index/status", ctx -> {
             Map<String, Object> status = Map.of(
                     "service", "example-service",
                     "status", "running"
