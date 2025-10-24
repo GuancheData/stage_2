@@ -69,7 +69,7 @@ public class MongoDB implements InvertedIndex {
 
     }
 
-    public void buildIndexForBooks(Set<Integer> bookIdSet, Map<Integer, String> languageReferences) {
+    public void buildIndexForBooks(Integer bookIdSet, Map<Integer, String> languageReferences) {
         Path route = Paths.get(this.datalakePath);
         long initTime = System.nanoTime();
 
@@ -82,13 +82,13 @@ public class MongoDB implements InvertedIndex {
                             return;
                         }
 
-                        int bookId = Integer.parseInt(matcher.group(1));
-                        if (!bookIdSet.contains(bookId) || !languageReferences.containsKey(bookId)) {
+                        int filebookId = Integer.parseInt(matcher.group(1));
+                        if (!bookIdSet.equals(filebookId) || !languageReferences.containsKey(filebookId)) {
                             return;
                         }
 
-                        String language = languageReferences.get(bookId).toLowerCase();
-                        System.out.printf("[INVERTED INDEX] Indexing book %d (%s)...%n", bookId, language);
+                        String language = languageReferences.get(filebookId).toLowerCase();
+                        System.out.printf("[INVERTED INDEX] Indexing book %d (%s)...%n", filebookId, language);
 
                         Set<String> stopWords = StopwordsLoader.loadStopwords(this.stopwordsPath, stopwordsCache, language);
                         if (stopWords.isEmpty()) {
@@ -116,7 +116,7 @@ public class MongoDB implements InvertedIndex {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        saveIndexForBook(bookId, positionDict, languageReferences);
+                        saveIndexForBook(filebookId, positionDict, languageReferences);
                     });
         } catch (IOException e) {
             e.printStackTrace();
