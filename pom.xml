@@ -10,6 +10,7 @@
 
     <modules>
         <!-- put module names here -->
+        <module>ingestion-service</module>
     </modules>
 
     <properties>
