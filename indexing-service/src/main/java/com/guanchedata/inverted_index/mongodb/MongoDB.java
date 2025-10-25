@@ -89,8 +89,11 @@ public class MongoDB implements InvertedIndex {
                             return;
                         }
 
-                        String language = languageReferences.get(bookIdStr).toLowerCase();
-                        System.out.printf("[INVERTED INDEX] Indexing book %d (%s)...%n", filebookId, language);
+                        String language = languageReferences.get(bookIdStr);
+                        if (language == null) {
+                            return;
+                        }
+                        language = language.toLowerCase();
 
                         Set<String> stopWords = StopwordsLoader.loadStopwords(this.stopwordsPath, stopwordsCache, language);
                         if (stopWords.isEmpty()) {
@@ -126,7 +129,6 @@ public class MongoDB implements InvertedIndex {
 
         long finalTime = System.nanoTime();
         double seconds = (finalTime - initTime) / 1_000_000_000.0;
-        System.out.printf("[INVERTED INDEX] Total indexing time: %.2f segundos%n", seconds);
     }
 
 

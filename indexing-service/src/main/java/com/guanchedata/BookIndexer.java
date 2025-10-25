@@ -30,7 +30,7 @@ public class BookIndexer {
         MongoDB mongoDB = new MongoDB(this.datalakePath, this.stopwordsPath, this.databaseName, this.collectionName);
 
         Map<String, String> languages = metadataDB.saveMetadata(bookId);
-        System.out.println(languages);
+        //System.out.println(languages);
         mongoDB.buildIndexForBooks(bookId, languages);
 
     }

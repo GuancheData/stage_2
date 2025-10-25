@@ -29,7 +29,6 @@ public class MetadataSQLiteDB  {
                     metadata.getOrDefault("Author", null),
                     metadata.getOrDefault("Language", null),
                     metadata.getOrDefault("Year", null));
-            System.out.println("Metadata saved in " + dbFilePath + " (SQLite)\n");
             return extractLanguage(allMetadata);
         }
         return new HashMap<>();
