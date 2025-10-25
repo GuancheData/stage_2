@@ -9,7 +9,7 @@ public class GutenbergFetch {
     public String fetchBook(Connection connection) throws IOException {
         Connection.Response response = connection.execute();
         if (response.statusCode() != 200){
-            throw new HttpStatusException("Error HTTP. ", response.statusCode(), response.url().toString());
+            throw new HttpStatusException("Error HTTP.", response.statusCode(), response.url().toString());
         }
         return response.body();
     }
