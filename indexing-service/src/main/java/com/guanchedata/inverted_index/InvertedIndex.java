@@ -4,6 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface InvertedIndex {
-    void saveIndexForBook(int bookId, Map<String, List<Integer>> positionDict, Map<Integer, String> languageReference);
+    void saveIndexForBook(int bookId, Map<String, List<Integer>> positionDict);
 
 }

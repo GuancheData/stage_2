@@ -30,7 +30,7 @@ public class IndexingController {
         this.bookIndexer.execute(bookId);
         this.books_indexed += 1;
         this.last_update = Instant.now();
-        Map<String, Object> response = Map.of("book_id", bookId, "index", "updated");
+        Map<String, Object> response = Map.of( "index", "updated","book_id", bookId);
         ctx.result(gson.toJson(response));
     }
 

@@ -41,7 +41,7 @@ public class MongoDB implements InvertedIndex {
         this.collection.createIndex(new Document("word", 1), new IndexOptions().unique(true));
     }
 
-    public void saveIndexForBook(int bookId, Map<String, List<Integer>> positionMap, Map<Integer, String> languageReference) {
+    public void saveIndexForBook(int bookId, Map<String, List<Integer>> positionMap) {
         List<WriteModel<Document>> operation = new ArrayList<>();
         String bookIdStr = String.valueOf(bookId);
 
@@ -69,7 +69,7 @@ public class MongoDB implements InvertedIndex {
 
     }
 
-    public void buildIndexForBooks(Integer bookId, Map<Integer, String> languageReferences) {
+    public void buildIndexForBooks(Integer bookId, Map<String, String> languageReferences) {
         Path route = Paths.get(this.datalakePath);
         long initTime = System.nanoTime();
 
@@ -83,11 +83,13 @@ public class MongoDB implements InvertedIndex {
                         }
 
                         int filebookId = Integer.parseInt(matcher.group(1));
-                        if (!bookId.equals(filebookId) || !languageReferences.containsKey(filebookId)) {
+                        String bookIdStr = String.valueOf(filebookId);
+
+                        if (!bookId.equals(filebookId) || !languageReferences.containsKey(bookIdStr)) {
                             return;
                         }
 
-                        String language = languageReferences.get(filebookId).toLowerCase();
+                        String language = languageReferences.get(bookIdStr).toLowerCase();
                         System.out.printf("[INVERTED INDEX] Indexing book %d (%s)...%n", filebookId, language);
 
                         Set<String> stopWords = StopwordsLoader.loadStopwords(this.stopwordsPath, stopwordsCache, language);
@@ -116,7 +118,7 @@ public class MongoDB implements InvertedIndex {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        saveIndexForBook(filebookId, positionDict, languageReferences);
+                        saveIndexForBook(filebookId, positionDict);
                     });
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,5 +128,6 @@ public class MongoDB implements InvertedIndex {
         double seconds = (finalTime - initTime) / 1_000_000_000.0;
         System.out.printf("[INVERTED INDEX] Total indexing time: %.2f segundos%n", seconds);
     }
+
 
 }
