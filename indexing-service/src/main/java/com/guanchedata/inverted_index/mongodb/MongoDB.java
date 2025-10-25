@@ -69,7 +69,7 @@ public class MongoDB implements InvertedIndex {
 
     }
 
-    public void buildIndexForBooks(Integer bookIdSet, Map<Integer, String> languageReferences) {
+    public void buildIndexForBooks(Integer bookId, Map<Integer, String> languageReferences) {
         Path route = Paths.get(this.datalakePath);
         long initTime = System.nanoTime();
 
@@ -83,7 +83,7 @@ public class MongoDB implements InvertedIndex {
                         }
 
                         int filebookId = Integer.parseInt(matcher.group(1));
-                        if (!bookIdSet.equals(filebookId) || !languageReferences.containsKey(filebookId)) {
+                        if (!bookId.equals(filebookId) || !languageReferences.containsKey(filebookId)) {
                             return;
                         }
 
