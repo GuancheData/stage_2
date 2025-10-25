@@ -15,11 +15,6 @@ public class MetadataParser {
                 "Title:\\s*(.+)|Author:\\s*(.+)|Language:\\s*(.+)|Release date:.*?(\\d{4})");
     }
 
-    /**
-     * Parse metadata from a specific book ID.
-     * @param bookId The book ID to parse.
-     * @return Map<String, String> with metadata (keys: Title, Author, Language)
-     */
     public Map<String, String> parseMetadata(int bookId) {
         Path route = Paths.get(datalakePath);
         String target = bookId + "_header.txt";
@@ -45,20 +40,18 @@ public class MetadataParser {
         return metadata;
     }
 
-    /**
-     * Extracts metadata from a file.
-     * @param reader BufferedReader for the file.
-     * @return Map<String, String> with metadata.
-     */
     private Map<String, String> extractMetadata(BufferedReader reader) throws IOException {
         Map<String, String> metadata = new HashMap<>();
         String line;
         while ((line = reader.readLine()) != null) {
             Matcher matcher = pattern.matcher(line);
             if (matcher.find()) {
-                String[] parts = line.split(":", 2);
-                if (parts.length == 2) {
-                    metadata.put(parts[0].trim(), parts[1].trim());
+                String[] keys = {"Title", "Author", "Language", "Year"};
+                for (int i = 0; i < keys.length; i++) {
+                    if (matcher.group(i + 1) != null) {
+                        metadata.put(keys[i], matcher.group(i + 1).trim());
+                        break;
+                    }
                 }
             }
         }

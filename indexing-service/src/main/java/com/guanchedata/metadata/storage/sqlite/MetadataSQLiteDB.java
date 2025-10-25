@@ -42,7 +42,7 @@ public class MetadataSQLiteDB  {
             try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbFilePath)) {
                 conn.createStatement().executeUpdate(
                         "CREATE TABLE IF NOT EXISTS metadata (" +
-                                "id INTEGER PRIMARY KEY, title TEXT NOT NULL, author TEXT, language TEXT, year TEXT);)"
+                                "id INTEGER PRIMARY KEY, title TEXT NOT NULL, author TEXT, language TEXT, year TEXT)"
                 );
                 try (PreparedStatement ps = conn.prepareStatement(
                         "INSERT INTO metadata (id, title, author, language, year) VALUES (?, ?, ?, ?, ?)")) {
