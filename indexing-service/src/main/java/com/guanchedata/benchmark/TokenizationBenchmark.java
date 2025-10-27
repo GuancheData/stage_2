@@ -6,25 +6,24 @@ import org.openjdk.jmh.annotations.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-@Warmup(iterations=5)
-@Measurement(iterations=10)
-@Fork(1)
+@OutputTimeUnit(TimeUnit.SECONDS)
+@Warmup(iterations = 5)
+@Measurement(iterations = 10)
+@Fork(value=1, jvmArgs = {"-Xmx4G"})
 @State(Scope.Thread)
 public class TokenizationBenchmark {
 
     //ruta de un libro solo
-    @Param({""})
-    private String sampleFilePath;
+    @Param({})
+    private String oneBookPath;
 
     // ruta stopwords
-    @Param({""})
-    private String stopwordsJsonPath;
+    @Param({})
+    private String stopwordsPath;
 
     private BookIndexProcessor processor;
     private Path file;
@@ -33,12 +32,12 @@ public class TokenizationBenchmark {
     @Setup(Level.Trial)
     public void setup() {
         processor = new BookIndexProcessor();
-        file = Paths.get(sampleFilePath);
-        stopwords = StopwordsLoader.loadStopwords(stopwordsJsonPath, new java.util.HashMap<>(), "en");
+        file = Paths.get(oneBookPath);
+        stopwords = StopwordsLoader.loadStopwords(stopwordsPath, new java.util.HashMap<>(), "en");
     }
 
     @Benchmark
-    public Map<String, java.util.List<Integer>> benchmarkExtractWordPositions() {
-        return processor.extractWordPositions(file, stopwords);
+    public void benchmarkExtractWordPositions() {
+        processor.extractWordPositions(file, stopwords);
     }
 }

@@ -3,19 +3,18 @@ package com.guanchedata.benchmark;
 import com.guanchedata.metadata.parser.MetadataParser;
 import org.openjdk.jmh.annotations.*;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-@Warmup(iterations=5)
-@Measurement(iterations=10)
-@Fork(1)
+@OutputTimeUnit(TimeUnit.SECONDS)
+@Warmup(iterations = 5)
+@Measurement(iterations = 10)
+@Fork(value=1, jvmArgs = {"-Xmx4G"})
 @State(Scope.Thread)
 public class MetadataParsingBenchmark {
 
     //ruta datalake
-    @Param({""})
+    @Param({})
     private String datalakePath;
 
     private MetadataParser metadataParser;
@@ -26,7 +25,9 @@ public class MetadataParsingBenchmark {
     }
 
     @Benchmark
-    public Map<String, String> benchmarkParseMetadata() {
-        return metadataParser.parseMetadata(23);
+    public void benchmarkParseMetadata() {
+        for (int i=1; i<=5; i++) {
+            metadataParser.parseMetadata(i);
+        }
     }
 }
